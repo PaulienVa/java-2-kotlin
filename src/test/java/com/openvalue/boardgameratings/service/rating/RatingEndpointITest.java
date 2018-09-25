@@ -10,24 +10,20 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 @ExtendWith(SpringExtension.class)
-//@WebMvcTest(RatingEndpoint.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class RatingEndpointIT {
+class RatingEndpointITest {
 
-//    @Autowired
     private MockMvc mvc;
 
     @Autowired
@@ -56,7 +52,6 @@ class RatingEndpointIT {
         final String content = objectMapper.writeValueAsString(dominion);
         mvc.perform(post("/rate")
                 .contentType(MediaType.APPLICATION_JSON)
-                .characterEncoding("utf-8")
                 .content(content)
         )
         .andExpect(status().isOk());
