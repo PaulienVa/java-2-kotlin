@@ -1,4 +1,4 @@
-package com.openvalue.boardgameratings.api;
+package com.openvalue.boardgameratings.service.boardgame;
 
 public enum Category {
     EDUCATIONAL,

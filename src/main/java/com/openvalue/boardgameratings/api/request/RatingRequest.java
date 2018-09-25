@@ -2,12 +2,14 @@ package com.openvalue.boardgameratings.api.request;
 
 import lombok.Value;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 @Value
 public class RatingRequest {
+    @NotBlank
     private final String ratedGame;
-    private final Double rate;
 
-    public boolean isValid() {
-        return !ratedGame.isEmpty() && rate != null;
-    }
+    @NotNull
+    private final Double rate;
 }
