@@ -16,6 +16,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 
+import static com.openvalue.boardgameratings.service.util.TestData.NAME;
+import static com.openvalue.boardgameratings.service.util.TestData.boardGame;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
@@ -46,7 +48,7 @@ class RatingEndpointITest {
     @DisplayName("Rating an existing boardGame will update the grade")
     void rate_existing_boardGame_will_update_the_rate() throws Exception {
         boardGameRepository.save(boardGame());
-        rateRepository.save(new RateEntity(null, NAME, 5.0d, 5));
+        rateRepository.save(new RateEntity(null, NAME, 5.0d));
 
         final RatingRequest dominion = new RatingRequest(NAME, 5.0);
         final String content = objectMapper.writeValueAsString(dominion);
@@ -55,18 +57,6 @@ class RatingEndpointITest {
                 .content(content)
         )
         .andExpect(status().isOk());
-
-
     }
 
-    private BoardGameEntity boardGame() {
-        return BoardGameEntity.builder()
-                .category(Category.ADVENTURE)
-                .name(NAME)
-                .minimalAge(10).maximalAge(99)
-                .minimalNumberOfPlayers(2).maximalNumberOfPlayers(4)
-                .build();
-    }
-
-    private static final String NAME = "Dominion";
 }

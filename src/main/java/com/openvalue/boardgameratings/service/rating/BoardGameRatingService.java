@@ -21,7 +21,7 @@ public class BoardGameRatingService {
     }
 
     BoardGame ratingBoardGame(RateBoardGame rateBoardGame) throws BoardGameNotFound {
-        final RateEntity build = RateEntity.builder().rate(rateBoardGame.getRate()).boardGameName(rateBoardGame.getBoardGameName()).scale(5).build();
+        final RateEntity build = new RateEntity(null, rateBoardGame.getBoardGameName(), rateBoardGame.getRate());
         rateRepository.save(build);
 
         return boardGameRepository.findByName(rateBoardGame.getBoardGameName())
@@ -36,13 +36,11 @@ public class BoardGameRatingService {
                 .average()
                 .getAsDouble();
 
-        return BoardGame.builder()
-                .name(bg.getName())
-                .category(Category.valueOf(bg.getCategory().name()))
-                .rating(new Rating(average, 5))
-                .ageRange(new AgeRange(bg.getMinimalAge(), bg.getMaximalAge()))
-                .numberOfPlayers(new NumberOfPlayers(bg.getMinimalNumberOfPlayers(), bg.getMaximalNumberOfPlayers()))
-                .build();
+        return new BoardGame(bg.getName(),Category.valueOf(bg.getCategory().name()),
+                            new AgeRange(bg.getMinimalAge(), bg.getMaximalAge()),
+                            new NumberOfPlayers(bg.getMinimalNumberOfPlayers(), bg.getMaximalNumberOfPlayers()),
+                            new Rating(average, 5)
+        );
     }
 
     //todo add plus and minus to show operator overloading

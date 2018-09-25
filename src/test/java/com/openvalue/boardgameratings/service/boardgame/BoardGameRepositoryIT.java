@@ -8,6 +8,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
 
+import static com.openvalue.boardgameratings.service.util.TestData.boardGame;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(SpringExtension.class)
@@ -18,15 +19,8 @@ class BoardGameRepositoryIT {
     private BoardGameRepository repository;
 
     @Test
-    void somethingAwesome() {
-
-        final BoardGameEntity play =  BoardGameEntity.builder()
-                .name("Play")
-                .category(Category.ADVENTURE)
-                .minimalNumberOfPlayers(2).maximalNumberOfPlayers(5)
-                .minimalAge(8).maximalAge(12)
-                .build();
-        repository.save(play);
+    void saving_boardGame_successfully() {
+        repository.save(boardGame());
 
         final List<BoardGameEntity> all = (List<BoardGameEntity>) repository.findAll();
         assertEquals(1, all.size());
