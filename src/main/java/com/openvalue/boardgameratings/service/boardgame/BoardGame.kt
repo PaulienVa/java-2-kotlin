@@ -8,6 +8,8 @@ enum class Category {
     ADVENTURE
 }
 
+class BoardGameNotFound(boardGameIdentifier: String) : RuntimeException(String.format("Boardgame [%s] not found.", boardGameIdentifier))
+
 @Entity
 data class BoardGameEntity(
 
