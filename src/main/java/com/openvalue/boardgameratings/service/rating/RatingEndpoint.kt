@@ -16,14 +16,14 @@ open class RatingEndpoint( @Autowired private val ratingService: BoardGameRating
 
     @RequestMapping(path = ["/rate"], method = [ RequestMethod.POST ], consumes = [ "application/json" ])
     fun rate(@RequestBody ratingRequest: RatingRequest): ResponseEntity<BoardGame> {
-        try {
+        return try {
             val rateBoardGame = RateBoardGame(ratingRequest.ratedGame, ratingRequest.rate)
             val ratedBoardGame = ratingService.ratingBoardGame(rateBoardGame)
-            return ResponseEntity.ok().body(ratedBoardGame)
+            ResponseEntity.ok().body(ratedBoardGame)
         } catch (boardGameNotFound: BoardGameNotFound) {
-            return ResponseEntity.notFound().build()
+            ResponseEntity.notFound().build()
         } catch (re: RuntimeException) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build()
+            ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build()
         }
 
     }
