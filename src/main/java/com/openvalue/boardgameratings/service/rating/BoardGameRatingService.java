@@ -39,9 +39,7 @@ public class BoardGameRatingService {
         return new BoardGame(bg.getName(),Category.valueOf(bg.getCategory().name()),
                             new AgeRange(bg.getMinimalAge(), bg.getMaximalAge()),
                             new NumberOfPlayers(bg.getMinimalNumberOfPlayers(), bg.getMaximalNumberOfPlayers()),
-                            new Rating(average, 5)
+                            new Rating(average)
         );
     }
-
-    //todo add plus and minus to show operator overloading
 }
