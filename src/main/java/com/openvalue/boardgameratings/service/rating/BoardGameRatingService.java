@@ -39,7 +39,7 @@ public class BoardGameRatingService {
         return BoardGame.builder()
                 .name(bg.getName())
                 .category(Category.valueOf(bg.getCategory().name()))
-                .rating(new Rating(average, 5))
+                .rating(new Rating(average))
                 .ageRange(new AgeRange(bg.getMinimalAge(), bg.getMaximalAge()))
                 .numberOfPlayers(new NumberOfPlayers(bg.getMinimalNumberOfPlayers(), bg.getMaximalNumberOfPlayers()))
                 .build();
