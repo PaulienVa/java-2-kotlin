@@ -27,7 +27,7 @@ open class BoardGameRatingService (@Autowired private val boardGameRepository: B
         return BoardGame(bg.name, Category.valueOf(bg.category.name),
                 AgeRange(bg.minimalAge, bg.maximalAge),
                 NumberOfPlayers(bg.minimalNumberOfPlayers, bg.maximalNumberOfPlayers),
-                Rating(average, 5)
+                Rating(average)
         )
     }
 
