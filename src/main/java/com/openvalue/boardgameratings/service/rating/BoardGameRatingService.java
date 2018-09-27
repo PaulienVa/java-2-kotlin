@@ -45,5 +45,4 @@ public class BoardGameRatingService {
                 .build();
     }
 
-    //todo add plus and minus to show operator overloading
 }
