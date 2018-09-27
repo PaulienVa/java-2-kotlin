@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 @Service
-open class BoardGameRatingService (@Autowired private val boardGameRepository: BoardGameRepository, @Autowired private val rateRepository: RateRepository) {
+open class BoardGameRatingService (private val boardGameRepository: BoardGameRepository, private val rateRepository: RateRepository) {
 
     @Throws(BoardGameNotFound::class)
     fun ratingBoardGame(rateBoardGame: RateBoardGame): BoardGame {

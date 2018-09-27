@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-open class RatingEndpoint( @Autowired private val ratingService: BoardGameRatingService ) {
+open class RatingEndpoint(private val ratingService: BoardGameRatingService ) {
 
     @RequestMapping(path = ["/rate"], method = [ RequestMethod.POST ], consumes = [ "application/json" ])
     fun rate(@RequestBody ratingRequest: RatingRequest): ResponseEntity<BoardGame> {
