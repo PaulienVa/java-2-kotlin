@@ -16,4 +16,4 @@ data class AgeRange (val minimumAge: Int, val maximumAge: Int = 99)
 
 data class NumberOfPlayers ( val minimalNumberOfPlayers: Int,  val maximumNumberOfPlayers: Int = 4)
 
-data class Rating (val averageRate: Double, val scale: Int)
+data class Rating (val averageRate: Double)
