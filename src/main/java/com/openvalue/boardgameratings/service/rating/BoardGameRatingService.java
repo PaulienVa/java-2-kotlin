@@ -36,13 +36,13 @@ public class BoardGameRatingService {
                 .average()
                 .getAsDouble();
 
-        return BoardGame.builder()
-                .name(bg.getName())
-                .category(Category.valueOf(bg.getCategory().name()))
-                .rating(new Rating(average))
-                .ageRange(new AgeRange(bg.getMinimalAge(), bg.getMaximalAge()))
-                .numberOfPlayers(new NumberOfPlayers(bg.getMinimalNumberOfPlayers(), bg.getMaximalNumberOfPlayers()))
-                .build();
+        return new BoardGame(
+                bg.getName(),
+                Category.valueOf(bg.getCategory().name()),
+                new Rating(average),
+                new AgeRange(bg.getMinimalAge(), bg.getMaximalAge()),
+                new NumberOfPlayers(bg.getMinimalNumberOfPlayers(), bg.getMaximalNumberOfPlayers())
+        );
     }
 
 }
