@@ -8,3 +8,5 @@ But what if you could migrate to Kotlin with the same effort?
 This would bring you additional advantages like: data class, very concise list manipulations, extension functions and even more to get you’re code more readable and maintainable.
 Considering the Kotlin migration, the first questions that pop up are: What are the wise steps to take and where to start? 
 Some experiences and thoughts answering these questions will be shared during this live coding session.
+
+The slides belonging to this talk can be found [here](https://www.slideshare.net/PaulienvanAlst/180929nextbuildfromjavatokotlin)
