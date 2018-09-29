@@ -6,8 +6,7 @@ import javax.persistence.*;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
-@Builder(toBuilder = true)
-@AllArgsConstructor(access = AccessLevel.PACKAGE)
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 @Entity
 @Getter
@@ -23,7 +22,4 @@ class RateEntity {
 
     @Column(name = "rate", nullable = false)
     private Double rate;
-
-    @Column(name = "scale", nullable = false)
-    private Integer scale;
 }

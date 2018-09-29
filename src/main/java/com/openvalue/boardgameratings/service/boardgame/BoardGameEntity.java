@@ -6,8 +6,7 @@ import javax.persistence.*;
 
 @Entity
 @Getter
-@Builder(toBuilder = true)
-@AllArgsConstructor(access = AccessLevel.PACKAGE)
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 public class BoardGameEntity {
 

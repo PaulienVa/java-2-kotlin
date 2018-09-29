@@ -21,7 +21,7 @@ public class BoardGameRatingService {
     }
 
     BoardGame ratingBoardGame(RateBoardGame rateBoardGame) throws BoardGameNotFound {
-        final RateEntity build = RateEntity.builder().rate(rateBoardGame.getRate()).boardGameName(rateBoardGame.getBoardGameName()).scale(5).build();
+        final RateEntity build = new  RateEntity(null, rateBoardGame.getBoardGameName(), rateBoardGame.getRate());
         rateRepository.save(build);
 
         return boardGameRepository.findByName(rateBoardGame.getBoardGameName())

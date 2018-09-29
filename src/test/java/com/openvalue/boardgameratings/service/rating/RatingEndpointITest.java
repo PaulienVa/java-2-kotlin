@@ -46,7 +46,7 @@ class RatingEndpointITest {
     @DisplayName("Rating an existing boardGame will update the grade")
     void rate_existing_boardGame_will_update_the_rate() throws Exception {
         boardGameRepository.save(boardGame());
-        rateRepository.save(new RateEntity(null, NAME, 5.0d, 5));
+        rateRepository.save(new RateEntity(null, NAME, 5.0d));
 
         final RatingRequest dominion = new RatingRequest(NAME, 5.0);
         final String content = objectMapper.writeValueAsString(dominion);
@@ -60,12 +60,12 @@ class RatingEndpointITest {
     }
 
     private BoardGameEntity boardGame() {
-        return BoardGameEntity.builder()
-                .category(Category.ADVENTURE)
-                .name(NAME)
-                .minimalAge(10).maximalAge(99)
-                .minimalNumberOfPlayers(2).maximalNumberOfPlayers(4)
-                .build();
+        return new BoardGameEntity(
+                null,
+                NAME,
+                Category.ADVENTURE,
+                10, 99,
+                2, 4);
     }
 
     private static final String NAME = "Dominion";
