@@ -9,10 +9,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
+import java.util.List;
+
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @Slf4j
@@ -43,5 +47,15 @@ public class RatingEndpoint {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
 
+    }
+
+    @RequestMapping(
+            path = "/boardgames",
+            method = GET,
+            consumes = "application/json"
+    )
+    public ResponseEntity<List<BoardGame>> boardgamesForMinimalMeanRate(@RequestParam(name = "rate") Double rate) {
+        List<BoardGame> boardGames = ratingService.withHigherRateThan(rate);
+        return ResponseEntity.ok().body(boardGames);
     }
 }
