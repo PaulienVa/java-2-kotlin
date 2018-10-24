@@ -2,6 +2,7 @@ package com.openvalue.boardgameratings.service.rating
 
 import com.openvalue.boardgameratings.api.Rating
 import com.openvalue.boardgameratings.service.boardgame.BoardGameRepository
+import com.openvalue.boardgameratings.service.util.*
 import com.openvalue.boardgameratings.service.util.TestData.*
 import junit.framework.Assert.assertEquals
 import org.junit.jupiter.api.Test
