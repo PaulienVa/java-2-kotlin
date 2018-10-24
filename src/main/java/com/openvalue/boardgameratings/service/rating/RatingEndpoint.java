@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
-
 import java.util.List;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
@@ -55,7 +53,7 @@ public class RatingEndpoint {
             consumes = "application/json"
     )
     public ResponseEntity<List<BoardGame>> boardgamesForMinimalMeanRate(@RequestParam(name = "rate") Double rate) {
-        List<BoardGame> boardGames = ratingService.withMinimalRate(rate);
+        List<BoardGame> boardGames = ratingService.withHigherRateThan(rate);
         return ResponseEntity.ok().body(boardGames);
     }
 }
