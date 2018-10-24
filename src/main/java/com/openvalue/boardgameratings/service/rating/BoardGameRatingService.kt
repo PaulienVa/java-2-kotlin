@@ -4,7 +4,6 @@ import com.openvalue.boardgameratings.api.*
 import com.openvalue.boardgameratings.service.boardgame.BoardGameEntity
 import com.openvalue.boardgameratings.service.boardgame.BoardGameNotFound
 import com.openvalue.boardgameratings.service.boardgame.BoardGameRepository
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 @Service
@@ -20,6 +19,11 @@ open class BoardGameRatingService (private val boardGameRepository: BoardGameRep
                 .orElseThrow { BoardGameNotFound(rateBoardGame.boardGameName) }
     }
 
+    fun withHigherRateThan(rate: Double): List<BoardGame> {
+        return boardGameRepository.findAll()
+                .map{ this.ratedBoardGame(it) }
+                .filter { it.rating.averageRate > rate }
+    }
     private fun ratedBoardGame(bg: BoardGameEntity): BoardGame {
         val ratesOfTheBoardGame = rateRepository.findByBoardGameName(bg.name)
         val average = ratesOfTheBoardGame.map { it.rate }.average()
