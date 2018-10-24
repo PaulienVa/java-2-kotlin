@@ -30,7 +30,7 @@ public class BoardGameRatingService {
                 .orElseThrow(() -> new BoardGameNotFound(rateBoardGame.getBoardGameName()));
     }
 
-    List<BoardGame> withMinimalRate(Double rate) {
+    List<BoardGame> withHigherRateThan(Double rate) {
         return boardGameRepository.findAll()
                 .stream()
                 .map(this::ratedBoardGame)
