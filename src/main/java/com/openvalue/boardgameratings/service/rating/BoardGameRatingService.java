@@ -8,11 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class BoardGameRatingService {
-     private final BoardGameRepository boardGameRepository;
-     private final RateRepository rateRepository;
+    private final BoardGameRepository boardGameRepository;
+    private final RateRepository rateRepository;
 
     @Autowired
     public BoardGameRatingService(BoardGameRepository boardGameRepository, RateRepository rateRepository) {
@@ -29,6 +30,14 @@ public class BoardGameRatingService {
                 .orElseThrow(() -> new BoardGameNotFound(rateBoardGame.getBoardGameName()));
     }
 
+    List<BoardGame> withMinimalRate(Double rate) {
+        return boardGameRepository.findAll()
+                .stream()
+                .map(this::ratedBoardGame)
+                .filter(game -> game.getRating().getAverageRate() > rate)
+                .collect(Collectors.toList());
+    }
+
     private BoardGame ratedBoardGame(BoardGameEntity bg) {
         final List<RateEntity> ratesOfTheBoardGame = rateRepository.findByBoardGameName(bg.getName());
         final Double average = ratesOfTheBoardGame.stream()
@@ -36,11 +45,12 @@ public class BoardGameRatingService {
                 .average()
                 .getAsDouble();
 
-        return new BoardGame(bg.getName(),Category.valueOf(bg.getCategory().name()),
-                            new AgeRange(bg.getMinimalAge(), bg.getMaximalAge()),
-                            new NumberOfPlayers(bg.getMinimalNumberOfPlayers(), bg.getMaximalNumberOfPlayers()),
-                            new Rating(average)
+        return new BoardGame(bg.getName(), Category.valueOf(bg.getCategory().name()),
+                new AgeRange(bg.getMinimalAge(), bg.getMaximalAge()),
+                new NumberOfPlayers(bg.getMinimalNumberOfPlayers(), bg.getMaximalNumberOfPlayers()),
+                new Rating(average)
         );
     }
-
 }
+
+
