@@ -1,4 +1,4 @@
-# Repository related to the talk given at NextBuild conference on September 28th, 2019
+# Repository related to the talk:
 
 ## From Java to Kotlin: the adventures of a smooth migration
 
@@ -8,3 +8,8 @@ But what if you could migrate to Kotlin with the same effort?
 This would bring you additional advantages like: data class, very concise list manipulations, extension functions and even more to get you’re code more readable and maintainable.
 Considering the Kotlin migration, the first questions that pop up are: What are the wise steps to take and where to start? 
 Some experiences and thoughts answering these questions will be shared during this live coding session.
+
+## Talk was given during the following conferences
+| Date| Conference|
+|---|--------|
+|29-9-2018| Next Build|
