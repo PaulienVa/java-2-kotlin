@@ -62,19 +62,7 @@ class RatingEndpointITest {
                 .content(content)
         )
         .andExpect(status().isOk());
-
-
     }
-
-    private BoardGameEntity boardGame() {
-        return new BoardGameEntity(
-                null,
-                NAME,
-                Category.ADVENTURE,
-                10, 99,
-                2, 4);
-    }
-
 
     @Test
     @DisplayName("Possible to retrieve a game with some higher rate")
@@ -103,9 +91,9 @@ class RatingEndpointITest {
 
     private String expectedGame(BoardGameEntity en, Double expectedRate) throws JsonProcessingException {
         BoardGame game = new BoardGame(en.getName(), Category.valueOf(en.getCategory().name()),
+                new Rating(expectedRate),
                 new AgeRange(en.getMinimalAge(), en.getMaximalAge()),
-                new NumberOfPlayers(en.getMinimalNumberOfPlayers(), en.getMaximalNumberOfPlayers()),
-                new Rating(expectedRate)
+                new NumberOfPlayers(en.getMinimalNumberOfPlayers(), en.getMaximalNumberOfPlayers())
         );
 
         return objectMapper.writeValueAsString(Arrays.asList(game));
