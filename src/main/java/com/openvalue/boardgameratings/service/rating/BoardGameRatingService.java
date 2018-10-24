@@ -46,9 +46,9 @@ public class BoardGameRatingService {
                 .getAsDouble();
 
         return new BoardGame(bg.getName(),Category.valueOf(bg.getCategory().name()),
-                            new Rating(average),
                             new AgeRange(bg.getMinimalAge(), bg.getMaximalAge()),
-                            new NumberOfPlayers(bg.getMinimalNumberOfPlayers(), bg.getMaximalNumberOfPlayers())
+                            new NumberOfPlayers(bg.getMinimalNumberOfPlayers(), bg.getMaximalNumberOfPlayers()),
+                            new Rating(average)
         );
     }
 }
