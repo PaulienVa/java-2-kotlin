@@ -3,11 +3,12 @@ package com.openvalue.boardgameratings.service.rating
 import com.openvalue.boardgameratings.api.Rating
 import com.openvalue.boardgameratings.service.boardgame.BoardGameRepository
 import com.openvalue.boardgameratings.service.util.TestData.*
-import junit.framework.Assert.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.Mockito.*
+import org.mockito.junit.jupiter.MockitoExtension
 import java.util.*
+import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
 @ExtendWith(MockitoExtension::class)
