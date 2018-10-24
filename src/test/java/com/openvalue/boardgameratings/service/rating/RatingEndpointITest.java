@@ -1,10 +1,11 @@
 package com.openvalue.boardgameratings.service.rating;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.openvalue.boardgameratings.api.*;
 import com.openvalue.boardgameratings.api.request.RatingRequest;
 import com.openvalue.boardgameratings.service.boardgame.BoardGameEntity;
 import com.openvalue.boardgameratings.service.boardgame.BoardGameRepository;
-import com.openvalue.boardgameratings.service.boardgame.Category;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,11 +15,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.web.context.WebApplicationContext;
 
-import static com.openvalue.boardgameratings.service.util.TestData.NAME;
-import static com.openvalue.boardgameratings.service.util.TestData.boardGame;
+import java.util.Arrays;
+
+import static com.openvalue.boardgameratings.service.util.TestData.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
@@ -47,10 +52,10 @@ class RatingEndpointITest {
     @Test
     @DisplayName("Rating an existing boardGame will update the grade")
     void rate_existing_boardGame_will_update_the_rate() throws Exception {
-        boardGameRepository.save(boardGame());
-        rateRepository.save(new RateEntity(null, NAME, 5.0d));
+        boardGameRepository.save(popularBoardGame());
+        rateRepository.save(new RateEntity(null, POPULAR_GAME, 5.0d));
 
-        final RatingRequest dominion = new RatingRequest(NAME, 5.0);
+        final RatingRequest dominion = new RatingRequest(POPULAR_GAME, 5.0);
         final String content = objectMapper.writeValueAsString(dominion);
         mvc.perform(post("/rate")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -59,4 +64,35 @@ class RatingEndpointITest {
         .andExpect(status().isOk());
     }
 
+
+    @Test
+    @DisplayName("Possible to retrieve a game with some minimal rate")
+    void rate_game_with_minimal_rate() throws Exception {
+        boardGameRepository.save(popularBoardGame());
+        rateRepository.save(new RateEntity(null, POPULAR_GAME, 5.0d));
+        rateRepository.save(new RateEntity(null, POPULAR_GAME, 4.0d));
+
+        boardGameRepository.save(inpopularBoardGame());
+        rateRepository.save(new RateEntity(null, INPOPULAR_GAME, 1.0d));
+        rateRepository.save(new RateEntity(null, INPOPULAR_GAME, 1.0d));
+
+        mvc.perform(
+                get("/boardgames?rate=2")
+                .contentType(MediaType.APPLICATION_JSON)
+
+        ).andExpect(status().isOk()).andExpect(content().json(expectedGame(popularBoardGame(), 4.5d)));
+
+
+    }
+
+    private String expectedGame(BoardGameEntity en, Double expectedRate) throws JsonProcessingException {
+        BoardGame game = new BoardGame(en.getName(), Category.valueOf(en.getCategory().name()),
+                new AgeRange(en.getMinimalAge(), en.getMaximalAge()),
+                new NumberOfPlayers(en.getMinimalNumberOfPlayers(), en.getMaximalNumberOfPlayers()),
+                new Rating(expectedRate)
+        );
+
+        return objectMapper.writeValueAsString(Arrays.asList(game));
+
+    }
 }
