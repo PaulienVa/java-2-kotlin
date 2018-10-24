@@ -10,7 +10,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 @Entity
 @Getter
-class RateEntity {
+public class RateEntity {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
