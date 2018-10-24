@@ -6,6 +6,7 @@ import com.openvalue.boardgameratings.api.*;
 import com.openvalue.boardgameratings.api.request.RatingRequest;
 import com.openvalue.boardgameratings.service.boardgame.BoardGameEntity;
 import com.openvalue.boardgameratings.service.boardgame.BoardGameRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -55,7 +56,7 @@ class RatingEndpointITest {
         boardGameRepository.save(popularBoardGame());
         rateRepository.save(new RateEntity(null, POPULAR_GAME, 5.0d));
 
-        final RatingRequest dominion = new RatingRequest(POPULAR_GAME, 5.0);
+        final RatingRequest dominion = new RatingRequest(POPULAR_GAME, 5.0d);
         final String content = objectMapper.writeValueAsString(dominion);
         mvc.perform(post("/rate")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -92,8 +93,13 @@ class RatingEndpointITest {
                 .contentType(MediaType.APPLICATION_JSON)
 
         ).andExpect(status().isOk()).andExpect(content().json(expectedGame(popularBoardGame(), 4.5d)));
+    }
 
 
+    @AfterEach
+    void cleanUp () {
+        rateRepository.deleteAll();
+        boardGameRepository.deleteAll();
     }
 
     private String expectedGame(BoardGameEntity en, Double expectedRate) throws JsonProcessingException {
