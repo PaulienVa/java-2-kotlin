@@ -9,6 +9,4 @@ public class BoardGame {
     private final AgeRange ageRange;
     private final NumberOfPlayers numberOfPlayers;
     private final Rating rating;
-
-
 }
