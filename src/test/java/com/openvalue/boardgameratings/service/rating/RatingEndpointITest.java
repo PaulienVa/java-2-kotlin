@@ -92,9 +92,9 @@ class RatingEndpointITest {
 
     private String expectedGame(BoardGameEntity en, Double expectedRate) throws JsonProcessingException {
         BoardGame game = new BoardGame(en.getName(), Category.valueOf(en.getCategory().name()),
+                new Rating(expectedRate),
                 new AgeRange(en.getMinimalAge(), en.getMaximalAge()),
-                new NumberOfPlayers(en.getMinimalNumberOfPlayers(), en.getMaximalNumberOfPlayers()),
-                new Rating(expectedRate)
+                new NumberOfPlayers(en.getMinimalNumberOfPlayers(), en.getMaximalNumberOfPlayers())
         );
 
         return objectMapper.writeValueAsString(Arrays.asList(game));
