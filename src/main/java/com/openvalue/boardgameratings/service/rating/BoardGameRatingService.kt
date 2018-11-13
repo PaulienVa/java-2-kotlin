@@ -4,17 +4,25 @@ import com.openvalue.boardgameratings.api.*
 import com.openvalue.boardgameratings.service.boardgame.BoardGameEntity
 import com.openvalue.boardgameratings.service.boardgame.BoardGameNotFound
 import com.openvalue.boardgameratings.service.boardgame.BoardGameRepository
+import lombok.extern.slf4j.Slf4j
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.util.stream.Collectors
 
 @Service
 open class BoardGameRatingService (private val boardGameRepository: BoardGameRepository, private val rateRepository: RateRepository) {
+    private val logger = LoggerFactory.getLogger(BoardGameRatingService::class.java)
 
     @Throws(BoardGameNotFound::class)
     fun ratingBoardGame(rateBoardGame: RateBoardGame): BoardGame {
         val build = RateEntity(null, rateBoardGame.boardGameName, rateBoardGame.rate)
+
+        logger.debug("Saving new rating entity for boardgame ${rateBoardGame.boardGameName}")
+
         rateRepository.save(build)
+
+        logger.debug("Return updated rate for boardgame ${rateBoardGame.boardGameName}")
 
         return boardGameRepository.findByName(rateBoardGame.boardGameName)
                 .map { this.ratedBoardGame(it) }
@@ -22,11 +30,15 @@ open class BoardGameRatingService (private val boardGameRepository: BoardGameRep
     }
 
     fun withHigherRateThan(rate: Double): List<BoardGame> {
+        logger.debug("Find all boardgames with rate higher than $rate")
+
         return boardGameRepository.findAll()
                 .map{ this.ratedBoardGame(it) }
                 .filter { it.rating.averageRate > rate }
     }
     private fun ratedBoardGame(bg: BoardGameEntity): BoardGame {
+        logger.debug("Retrieving all the rates of boardgame ${bg.name}")
+
         val ratesOfTheBoardGame = rateRepository.findByBoardGameName(bg.name)
         val average = ratesOfTheBoardGame.asSequence().map { it.rate }.average()
 
