@@ -52,7 +52,7 @@ class RatingEndpointITest {
     @Test
     @DisplayName("Rating an existing boardGame will update the grade")
     void rate_existing_boardGame_will_update_the_rate() throws Exception {
-        // insert a boardgame
+        // insert a board game
         boardGameRepository.save(popularBoardGame());
 
         // insert a rate for this game
