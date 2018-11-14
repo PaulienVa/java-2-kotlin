@@ -52,11 +52,18 @@ class RatingEndpointITest {
     @Test
     @DisplayName("Rating an existing boardGame will update the grade")
     void rate_existing_boardGame_will_update_the_rate() throws Exception {
+        // insert a boardgame
         boardGameRepository.save(popularBoardGame());
+
+        // insert a rate for this game
         rateRepository.save(new RateEntity(null, POPULAR_GAME, 5.0d));
 
-        final RatingRequest dominion = new RatingRequest(POPULAR_GAME, 5.0d);
-        final String content = objectMapper.writeValueAsString(dominion);
+        // rate this game again
+        final RatingRequest popularGame = new RatingRequest(POPULAR_GAME, 5.0d);
+
+        final String content = objectMapper.writeValueAsString(popularGame);
+
+        // post the rate and verify the response
         mvc.perform(post("/rate")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content)
@@ -68,19 +75,26 @@ class RatingEndpointITest {
     @Test
     @DisplayName("Possible to retrieve a game with some higher rate")
     void rate_game_with_higher_rate() throws Exception {
+
+        // save a popular board game with high rates (on scale of 5)
         boardGameRepository.save(popularBoardGame());
         rateRepository.save(new RateEntity(null, POPULAR_GAME, 5.0d));
         rateRepository.save(new RateEntity(null, POPULAR_GAME, 4.0d));
 
+        // save a not so popular board game with low rates (on scale of 5)
         boardGameRepository.save(notPopularBoardGame());
         rateRepository.save(new RateEntity(null, NOT_POPULAR_GAME, 1.0d));
         rateRepository.save(new RateEntity(null, NOT_POPULAR_GAME, 1.0d));
 
+        // retrieve all the games with a mean rate above 2 and verify the response
         mvc.perform(
                 get("/boardgames?rate=2")
                 .contentType(MediaType.APPLICATION_JSON)
 
-        ).andExpect(status().isOk()).andExpect(content().json(expectedGame(popularBoardGame(), 4.5d)));
+        ).andExpect(status().isOk())
+         .andExpect(content().json(
+                 expectedGame(popularBoardGame(), 4.5d)
+         ));
     }
 
 
