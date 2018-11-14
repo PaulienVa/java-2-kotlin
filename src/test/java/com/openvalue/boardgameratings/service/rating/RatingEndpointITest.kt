@@ -50,11 +50,18 @@ internal class RatingEndpointITest {
 
     @Test
     fun `Rating an existing boardGame will update the grade`() {
+
+        // insert a board game
         boardGameRepository.save(popularBoardGame())
+
+        // insert a rate for this game
         rateRepository.save(RateEntity(null, POPULAR_GAME, 5.0))
 
+        // rate this game again
         val dominion = RatingRequest(POPULAR_GAME, 5.0)
         val content = objectMapper.writeValueAsString(dominion)
+
+        // post the rate and verify the response
         mvc.perform(post("/rate")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content)
@@ -65,14 +72,18 @@ internal class RatingEndpointITest {
 
     @Test
     fun `Possible to retrieve a game with some higher rate`() {
+
+        // save a popular board game with high rates (on scale of 5)
         boardGameRepository.save(popularBoardGame())
         rateRepository.save(RateEntity(null, POPULAR_GAME, 5.0))
         rateRepository.save(RateEntity(null, POPULAR_GAME, 4.0))
 
+        // save a not so popular board game with low rates (on scale of 5)
         boardGameRepository.save(notPopularBoardGame())
         rateRepository.save(RateEntity(null, NOT_POPULAR_GAME, 1.0))
         rateRepository.save(RateEntity(null, NOT_POPULAR_GAME, 1.0))
 
+        // retrieve all the games with a mean rate above 2 and verify the response
         mvc.perform(
                 get("/boardgames?rate=2")
                         .contentType(MediaType.APPLICATION_JSON)
