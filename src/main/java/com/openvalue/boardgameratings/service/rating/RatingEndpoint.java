@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
-
 import java.util.List;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
@@ -36,10 +34,20 @@ public class RatingEndpoint {
             consumes = "application/json"
     )
     public ResponseEntity<BoardGame> rate(@RequestBody RatingRequest ratingRequest) {
-        log.info("Rating request coming in for game {} with rate {}", ratingRequest.getRatedGame(), ratingRequest.getRate());
+
+        log.info("Rating request coming in for game {} with rate {}",
+                ratingRequest.getRatedGame(),
+                ratingRequest.getRate()
+        );
+
         try {
-            final RateBoardGame rateBoardGame = new RateBoardGame(ratingRequest.getRatedGame(), ratingRequest.getRate());
+            final RateBoardGame rateBoardGame = new RateBoardGame(
+                    ratingRequest.getRatedGame(),
+                    ratingRequest.getRate()
+            );
+
             final BoardGame ratedBoardGame = ratingService.ratingBoardGame(rateBoardGame);
+
             return ResponseEntity.ok().body(ratedBoardGame);
         } catch (BoardGameNotFound boardGameNotFound) {
             return ResponseEntity.notFound().build();
@@ -54,7 +62,9 @@ public class RatingEndpoint {
             method = GET,
             consumes = "application/json"
     )
-    public ResponseEntity<List<BoardGame>> boardgamesForMinimalMeanRate(@RequestParam(name = "rate") Double rate) {
+    public ResponseEntity<List<BoardGame>> boardgamesForMinimalMeanRate(
+            @RequestParam(name = "rate") Double rate
+    ) {
         List<BoardGame> boardGames = ratingService.withHigherRateThan(rate);
         return ResponseEntity.ok().body(boardGames);
     }
