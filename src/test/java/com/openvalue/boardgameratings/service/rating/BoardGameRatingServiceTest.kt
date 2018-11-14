@@ -1,14 +1,16 @@
 package com.openvalue.boardgameratings.service.rating
 
 import com.openvalue.boardgameratings.api.Rating
+import com.openvalue.boardgameratings.service.boardgame.BoardGameEntity
 import com.openvalue.boardgameratings.service.boardgame.BoardGameRepository
-import com.openvalue.boardgameratings.service.util.*
 import com.openvalue.boardgameratings.service.util.TestData.*
 import junit.framework.Assert.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.Mockito.*
 import org.mockito.junit.jupiter.MockitoExtension
+import org.mockito.stubbing.OngoingStubbing
+import org.mockito.stubbing.Stubber
 import java.util.*
 import kotlin.test.assertNotNull
 
@@ -23,11 +25,11 @@ internal class BoardGameRatingServiceTest {
 
     @Test
     fun `when game is rated then the game with new average rate is returned`() {
-        `when`(boardGameRepository.findByName(POPULAR_GAME)).thenReturn(Optional.of(
-                popularBoardGame()
-        ))
+        `when`(boardGameRepository.findByName(POPULAR_GAME))
+                .returnPopularGame()
 
-        `when`(rateRepository.findByBoardGameName(POPULAR_GAME)).thenReturn(listOf(highRate(), lowRate()))
+        `when`(rateRepository.findByBoardGameName(POPULAR_GAME))
+                .returnHighAndLowRate()
 
         val (_, _, _, _, rating) = boardGameRatingService.ratingBoardGame(RateBoardGame(POPULAR_GAME, lowRate().rate))
 
@@ -41,8 +43,10 @@ internal class BoardGameRatingServiceTest {
                 notPopularBoardGame()
         ))
 
-        doReturn(listOf(highRate())).`when`(rateRepository).findByBoardGameName(POPULAR_GAME)
-        doReturn(listOf(lowRate())).`when`(rateRepository).findByBoardGameName(NOT_POPULAR_GAME)
+        doReturn(listOf(highRate()))
+                .whenPopularGameIsRetrieved()
+        doReturn(listOf(lowRate()))
+                .whenNotPopularGameIsRetrieved()
 
         val ratedHigherThan3 = boardGameRatingService.withHigherRateThan(3.0)
 
@@ -50,4 +54,8 @@ internal class BoardGameRatingServiceTest {
         assertNotNull(ratedHigherThan3.find { (name) -> name == POPULAR_GAME })
     }
 
+    fun Stubber.whenPopularGameIsRetrieved() = this.`when`(rateRepository).findByBoardGameName(POPULAR_GAME)
+    fun Stubber.whenNotPopularGameIsRetrieved() = this.`when`(rateRepository).findByBoardGameName(NOT_POPULAR_GAME)
+    fun OngoingStubbing<Optional<BoardGameEntity>>.returnPopularGame() = this.thenReturn(Optional.of(popularBoardGame()))
+    fun OngoingStubbing<List<RateEntity>>.returnHighAndLowRate() = this.thenReturn(listOf(highRate(), lowRate()))
 }
