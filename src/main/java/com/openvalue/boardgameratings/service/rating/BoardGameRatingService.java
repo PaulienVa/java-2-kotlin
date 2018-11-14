@@ -24,17 +24,26 @@ public class BoardGameRatingService {
     }
 
     BoardGame ratingBoardGame(RateBoardGame rateBoardGame) throws BoardGameNotFound {
-        final RateEntity build = new RateEntity(null, rateBoardGame.getBoardGameName(), rateBoardGame.getRate());
+        final RateEntity rate = new RateEntity(null,
+                rateBoardGame.getBoardGameName(),
+                rateBoardGame.getRate()
+        );
 
-        log.debug("Saving new rating entity for boardgame {}", rateBoardGame.getBoardGameName());
+        log.debug("Saving new rating entity for boardgame {}",
+                rateBoardGame.getBoardGameName()
+        );
 
-        rateRepository.save(build);
+        rateRepository.save(rate);
 
-        log.debug("Return updated rate for boardgame {}", rateBoardGame.getBoardGameName());
+        log.debug("Return updated rate for boardgame {}",
+                rateBoardGame.getBoardGameName()
+        );
 
         return boardGameRepository.findByName(rateBoardGame.getBoardGameName())
                 .map(this::ratedBoardGame)
-                .orElseThrow(() -> new BoardGameNotFound(rateBoardGame.getBoardGameName()));
+                .orElseThrow(
+                        () -> new BoardGameNotFound(rateBoardGame.getBoardGameName())
+                );
     }
 
     List<BoardGame> withHigherRateThan(Double rate) {
