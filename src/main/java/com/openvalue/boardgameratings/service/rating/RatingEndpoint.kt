@@ -32,6 +32,7 @@ open class RatingEndpoint(private val ratingService: BoardGameRatingService ) {
     @RequestMapping(path = ["/boardgames"], method = [GET], consumes = ["application/json"])
     fun boardgamesForMinimalMeanRate(@RequestParam(name = "rate") rate: Double): ResponseEntity<List<BoardGame>> {
         val boardGames = ratingService.withHigherRateThan(rate)
-        return ResponseEntity.ok().body(boardGames)
+        return ResponseEntity.ok()
+                .body(boardGames)
     }
 }
