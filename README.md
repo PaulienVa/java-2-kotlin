@@ -13,4 +13,4 @@ Some experiences and thoughts answering these questions will be shared during th
 | Date| Conference|
 |---|--------|
 |29-9-2018| Next Build|
-|16-11-2018|Devoxx|
+|15-11-2018|Devoxx|
