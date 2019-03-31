@@ -6,7 +6,7 @@ import com.openvalue.boardgameratings.api.*
 import com.openvalue.boardgameratings.api.request.RatingRequest
 import com.openvalue.boardgameratings.service.boardgame.BoardGameEntity
 import com.openvalue.boardgameratings.service.boardgame.BoardGameRepository
-import com.openvalue.boardgameratings.service.util.TestData.*
+import com.openvalue.boardgameratings.service.util.*
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -41,6 +41,8 @@ internal class RatingEndpointITest {
     private lateinit var  rateRepository: RateRepository
 
     private val objectMapper = ObjectMapper()
+    private val popularGame = dominion()
+    private val notSoPopularGame = monopoly()
 
     @BeforeEach
     fun setUp() {
@@ -51,21 +53,20 @@ internal class RatingEndpointITest {
     fun `Rating an existing boardGame will update the grade`() {
 
         // insert a board game
-        boardGameRepository.save(popularBoardGame())
+        boardGameRepository.save(popularGame)
 
         // insert a rate for this game
-        rateRepository.save(RateEntity(null, POPULAR_GAME, 5.0))
+        rateRepository.save(oneOutOfFive { assignedTo = popularGame.name })
 
         // rate this game again
-        val dominion = RatingRequest(POPULAR_GAME, 5.0)
-        val content = objectMapper.writeValueAsString(dominion)
+        val dominionRateRequest = RatingRequest(popularGame.name, 5.0)
+        val content = objectMapper.writeValueAsString(dominionRateRequest)
 
         // post the rate and verify the response
         mvc.perform(post("/rate")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content)
-        )
-                .andExpect(status().isOk)
+        ).andExpect(status().isOk)
     }
 
 
@@ -73,21 +74,22 @@ internal class RatingEndpointITest {
     fun `Possible to retrieve a game with some higher rate`() {
 
         // save a popular board game with high rates (on scale of 5)
-        boardGameRepository.save(popularBoardGame())
-        rateRepository.save(RateEntity(null, POPULAR_GAME, 5.0))
-        rateRepository.save(RateEntity(null, POPULAR_GAME, 4.0))
+        boardGameRepository.save(popularGame)
+        rateRepository.save(fiveOutOfFive { assignedTo = popularGame.name })
+        rateRepository.save(fourOutOfFive { assignedTo = popularGame.name })
 
         // save a not so popular board game with low rates (on scale of 5)
-        boardGameRepository.save(notPopularBoardGame())
-        rateRepository.save(RateEntity(null, NOT_POPULAR_GAME, 1.0))
-        rateRepository.save(RateEntity(null, NOT_POPULAR_GAME, 1.0))
+        boardGameRepository.save(notSoPopularGame)
+        rateRepository.save(oneOutOfFive { assignedTo = notSoPopularGame.name })
+        rateRepository.save(oneOutOfFive { assignedTo = notSoPopularGame.name })
 
         // retrieve all the games with a mean rate above 2 and verify the response
         mvc.perform(
                 get("/boardgames?rate=2")
                         .contentType(MediaType.APPLICATION_JSON)
 
-        ).andExpect(status().isOk).andExpect(content().json(expectedGame(popularBoardGame(), 4.5)))
+        ).andExpect(status().isOk)
+         .andExpect(content().json(expectedGame(popularGame, 4.5)))
     }
 
 
