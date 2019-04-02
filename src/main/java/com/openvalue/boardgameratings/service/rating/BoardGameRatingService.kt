@@ -4,15 +4,12 @@ import com.openvalue.boardgameratings.api.*
 import com.openvalue.boardgameratings.service.boardgame.BoardGameEntity
 import com.openvalue.boardgameratings.service.boardgame.BoardGameNotFound
 import com.openvalue.boardgameratings.service.boardgame.BoardGameRepository
-import lombok.extern.slf4j.Slf4j
-import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Autowired
+import mu.KotlinLogging
 import org.springframework.stereotype.Service
-import java.util.stream.Collectors
 
 @Service
 open class BoardGameRatingService (private val boardGameRepository: BoardGameRepository, private val rateRepository: RateRepository) {
-    private val logger = LoggerFactory.getLogger(BoardGameRatingService::class.java)
+    private val logger = KotlinLogging.logger {  }
 
     @Throws(BoardGameNotFound::class)
     fun ratingBoardGame(rateBoardGame: RateBoardGame): BoardGame {
