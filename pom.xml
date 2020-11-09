@@ -9,7 +9,12 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
-        <java.version>1.8</java.version>
+        <junit-jupiter-engine.version>5.4.1</junit-jupiter-engine.version>
+        <junit-platform-surefire-provider.version>1.2.0</junit-platform-surefire-provider.version>
+        <junit-platform-launcher.version>1.4.1</junit-platform-launcher.version>
+        <lombok.version>1.16.18</lombok.version>
+        <maven-surefire-plugin.version>2.22.0</maven-surefire-plugin.version>
+        <mockito-core.version>2.18.0</mockito-core.version>
     </properties>
 
     <parent>
@@ -34,7 +39,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.16.18</version>
+            <version>${lombok.version}</version>
         </dependency>
 
         <!-- H2 -->
@@ -42,7 +47,7 @@
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
-            <version>1.4.197</version>
+            <version>${junit-platform-launcher.version}97</version>
         </dependency>
 
         <!-- JUnit 5 -->
@@ -55,38 +60,38 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
-            <version>5.4.1</version>
+            <version>${junit-jupiter-engine.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
-            <version>5.4.1</version>
+            <version>${junit-jupiter-engine.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.platform</groupId>
             <artifactId>junit-platform-launcher</artifactId>
-            <version>1.4.1</version>
+            <version>${junit-platform-launcher.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.platform</groupId>
             <artifactId>junit-platform-runner</artifactId>
-            <version>1.4.1</version>
+            <version>${junit-platform-launcher.version}</version>
             <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>2.18.0</version>
+            <version>${mockito-core.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-junit-jupiter</artifactId>
-            <version>2.18.0</version>
+            <version>${mockito-core.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -102,29 +107,26 @@
             </plugin>
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.22.0</version>
+                <version>${maven-surefire-plugin.version}</version>
                 <dependencies>
                     <dependency>
                         <groupId>org.junit.platform</groupId>
                         <artifactId>junit-platform-surefire-provider</artifactId>
-                        <version>1.2.0</version>
+                        <version>${junit-platform-surefire-provider.version}</version>
                     </dependency>
                     <dependency>
                         <groupId>org.junit.jupiter</groupId>
                         <artifactId>junit-jupiter-engine</artifactId>
-                        <version>5.4.1</version>
+                        <version>${junit-jupiter-engine.version}</version>
                     </dependency>
                     <dependency>
                         <groupId>org.junit.jupiter</groupId>
                         <artifactId>junit-jupiter-engine</artifactId>
-                        <version>5.4.1</version>
+                        <version>${junit-jupiter-engine.version}</version>
                     </dependency>
                 </dependencies>
             </plugin>
         </plugins>
 
-
     </build>
-
-
 </project>
