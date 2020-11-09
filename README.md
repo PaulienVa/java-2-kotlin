@@ -16,3 +16,4 @@ Some experiences and thoughts answering these questions will be shared during th
 |15-11-2018|Devoxx|
 |02-04-2019|Codemotion Amsterdam|
 |19-06-2019|GOTO Amsterdam|
+|19-03-2020|GOTO Night|
