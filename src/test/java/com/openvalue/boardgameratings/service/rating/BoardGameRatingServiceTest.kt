@@ -4,7 +4,6 @@ import com.openvalue.boardgameratings.api.Rating
 import com.openvalue.boardgameratings.service.boardgame.BoardGameEntity
 import com.openvalue.boardgameratings.service.boardgame.BoardGameRepository
 import com.openvalue.boardgameratings.service.util.TestData.*
-import junit.framework.Assert.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.Mockito.*
@@ -12,10 +11,11 @@ import org.mockito.junit.jupiter.MockitoExtension
 import org.mockito.stubbing.OngoingStubbing
 import org.mockito.stubbing.Stubber
 import java.util.*
+import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
 @ExtendWith(MockitoExtension::class)
-internal class BoardGameRatingServiceTest {
+class BoardGameRatingServiceTest {
 
     private val boardGameRepository = mock(BoardGameRepository::class.java)
 
