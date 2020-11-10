@@ -15,7 +15,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
 @ExtendWith(MockitoExtension::class)
-internal class BoardGameRatingServiceTest {
+class BoardGameRatingServiceTest {
 
     private val boardGameRepository = mock(BoardGameRepository::class.java)
 
