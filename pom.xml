@@ -11,6 +11,7 @@
   <properties>
     <kotlin.version>1.4.0</kotlin.version>
     <kotlin-logging.version>1.12.0</kotlin-logging.version>
+    <mockk.version>1.10.2</mockk.version>
   </properties>
 
   <parent>
@@ -94,6 +95,13 @@
       <groupId>org.mockito</groupId>
       <artifactId>mockito-junit-jupiter</artifactId>
       <version>${mockito.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>io.mockk</groupId>
+      <artifactId>mockk</artifactId>
+      <version>${mockk.version}</version>
       <scope>test</scope>
     </dependency>
 
