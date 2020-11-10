@@ -8,7 +8,11 @@ import mu.KotlinLogging
 import org.springframework.stereotype.Service
 
 @Service
-open class BoardGameRatingService (private val boardGameRepository: BoardGameRepository, private val rateRepository: RateRepository) {
+open class BoardGameRatingService (
+        private val boardGameRepository: BoardGameRepository,
+        private val rateRepository: RateRepository
+) {
+
     private val logger = KotlinLogging.logger {  }
 
     @Throws(BoardGameNotFound::class)
